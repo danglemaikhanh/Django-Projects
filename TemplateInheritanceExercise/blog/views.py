@@ -1,7 +1,5 @@
 from django.shortcuts import render
-
 # from django.http import HttpResponse
-
 
 # Create your views here.
 posts = [
@@ -41,3 +39,7 @@ def home(request):
 def about(request):
     # return HttpResponse("About")
     return render(request, "about.html", {"title": "About"})
+
+
+def base(request):
+    return render(request, "base.html")

@@ -21,6 +21,11 @@ class Project(models.Model):
         return self.name
 
 
+class TeamMember(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -33,17 +38,12 @@ class Task(models.Model):
         ("high", "High"),
     )
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default="low")
-    assigned_to = models.ManyToManyField(User, through="TeamMember")
-
-
-class TeamMember(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    assigned_to = models.ManyToManyField(TeamMember)
 
 
 class TimeEntry(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     user = models.ForeignKey(TeamMember, on_delete=models.CASCADE)
     start_at = models.DateTimeField()
-    duration = models.DecimalField(max_digits=5, decimal_places=2)
+    duration = models.IntegerField()
     description = models.TextField()
